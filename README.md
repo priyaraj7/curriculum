@@ -66,23 +66,46 @@ Participants should memorize [common JavaScript built-in functions](/javascript/
 
 ### Week 1 - Onboarding & Developer Tools
 
-1. [Welcome, Tips, and Rules](/onboarding/tech-industry-tips.md)
-1. [Expectations While at Techtonica](https://docs.google.com/document/d/1IWny-IXB-XDWW21l3JODwPuh1QOVBFQbii_DjvF0g00/edit?usp=sharing)
-1. [How to Learn](/onboarding/learning-to-learn.md)
-1. [Professionalism](/onboarding/professionalism.md)
-1. [Roles in Tech](/career/roles-in-tech/roles-in-tech.md)
-1. [Intro to Command Line Interface Tools](/dev-tools/command-line-interface.md)
-1. [Advanced Command Line](/dev-tools/command-line-advanced.md)
-1. [Bash Profile](/dev-tools/dot-profile.md)
+- Onboarding
+
+  - [Welcome, Tips, and Rules](/onboarding/tech-industry-tips.md)
+  - [Expectations While at Techtonica - Participant Handbook](https://docs.google.com/document/d/1IWny-IXB-XDWW21l3JODwPuh1QOVBFQbii_DjvF0g00/edit?usp=sharing)
+  - [How to Learn](/onboarding/learning-to-learn.md)
+
+  - [Ergonomics](/onboarding/ergonomics.md)
+  - [Asking Good Questions](/onboarding/asking-good-questions.md)
+  - [How to Pair Program](/onboarding/pair-programming.md)
+  - [Professionalism](/onboarding/professionalism.md)
+  - [Roles in Tech](/career/roles-in-tech/roles-in-tech.md)
+
+- Developer Tools
+
+  - [Chrome Developer Tools](https://github.com/Techtonica/curriculum/blob/main/chrome-developer-tools/chrome-developer-tools.md)
+  - [Intro to Command Line Interface Tools](/dev-tools/command-line-interface.md)
+
+  - [Intro to Command Line Interface Tools](/dev-tools/command-line-interface.md)
+  - [Advanced Command Line](/dev-tools/command-line-advanced.md)
+  - [Bash Profile](/dev-tools/dot-profile.md)
+
+- HTML
+  - [Intro to HTML](https://github.com/Techtonica/curriculum/blob/main/web/html.md)
+- CSS
+
+  - [Intro to CSS](https://github.com/Techtonica/curriculum/blob/main/web/css.md)
+    - [Sub-sub-heading](#sub-sub-heading-2)
+
+- Project 1
+  - [RecipePage](https://github.com/Techtonica/curriculum/blob/main/projects/recipe-page/phase-1-html-prompt.md)
+
 1. [Vim](/dev-tools/vim.md)
 1. [Homebrew](https://github.com/Techtonica/curriculum/issues/1155) 📝
-1. [How to Pair Program](/onboarding/pair-programming.md)
+
 1. [Project 0 - Week 1 Review](/projects/first-assessment.md)
 1. [Operating Systems](/dev-tools/operating-systems.md)
 1. [Keyboard Shortcuts](/dev-tools/keyboard-shortcuts.md)
-1. [Ergonomics](/onboarding/ergonomics.md)
+1.
 1. [Growth Mindset](/onboarding/YCLA_LessonPlan_v10.pdf)
-1. [Asking Good Questions](/onboarding/asking-good-questions.md)
+
 1. [Local Development with VS Code](/dev-tools/vscode.md)
 1. [Networking (Career)](/career/networking-career.md)
 1. [How the Internet Works (The Other Kind of Networking)](/networking-computing/README.md)
