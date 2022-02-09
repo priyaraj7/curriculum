@@ -135,7 +135,7 @@ const Child = props => {
 export default Child;
 ```
 
-You can run the code in this [codesandbox.io page](https://codesandbox.io/s/pass-data-from-child-to-parent-6tl0e?file=/src/Child.js:43-493).  Note that this is using React class syntax instead of the above functional syntax, but the rest is exactly the same.
+You can run the code in this [codesandbox.io page](https://codesandbox.io/s/modern-violet-7s2ng?file=/src/Child.js). 
 
 **A note on siblings and mediators:**
 
