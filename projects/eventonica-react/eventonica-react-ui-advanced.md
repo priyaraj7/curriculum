@@ -71,7 +71,6 @@ const initialState = {
   date: null,
   description: "",
   category: "",
-
 };
 ```
 
