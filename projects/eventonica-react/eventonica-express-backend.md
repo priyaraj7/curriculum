@@ -55,7 +55,7 @@ var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 ```
 
-1. In your second window, you should now be able to start `server` on port 4000 without any problems. Open a browser window and go to [http://localhost:4000/](http://localhost:4000/). If it's working, you should see a welcome message!
+1. In your second window, you should now be able to start `server` on port 4000 without any problems using the command `npm start`. Open a browser window and go to [http://localhost:4000/](http://localhost:4000/). If it's working, you should see a welcome message!
 
 1. Open `server/routes/index.js` and find line 6 that says:
 
@@ -69,7 +69,7 @@ app.set('port', port);
    res.render('index', { title: 'Our express app is working properly' });
    ```
 
-1. Stop your `eventonica-api` app and restart. `http://localhost:3000` should now show your new message.
+1. Stop your `server` app and restart. `http://localhost:4000` should now show your new message.
 
 1. `.gitignore` your `node_modules`. Push your project up to GitHub by creating a new repo there also called `eventonica-api`. Follow the directions on the page that include the first commit, etc.
 
