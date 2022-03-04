@@ -135,14 +135,15 @@ To test this, you can console log `console.log(req.body, 'the body')` before the
     };
 
     useEffect(() => {
-      getUsers(); // useEffect will run getUsers() every time this component loads, as opposed to just the first time it is rendered.
+      // useEffect will run getUsers() every time this component loads, as opposed to just the first time it is rendered.
+      getUsers();
     }, []);
     ```
 
     **Check**
     Why do we set `setUsers(res.users)` instead of `setUsers(res)`? Remember that `res` is an object with a key `users`, but it could also have other information. Try to keep states as specific as possible. ie if the `res` response did have other information such as pagination, we want to keep the `users` state as "specific" as possible, so that it only stores the users array part of the API response.
 
-1.  If you look at http://localhost:8888/ or your terminal, it will probably say that `useState` and `useEffect` are not defined. You should import these React hooks from React like this on line 1:
+1.  If you look at http://localhost:3000/ or your terminal, it will probably say that `useState` and `useEffect` are not defined. You should import these React hooks from React like this on line 1:
 
     ```
     import React, {useEffect, useState} from 'react';
@@ -150,37 +151,37 @@ To test this, you can console log `console.log(req.body, 'the body')` before the
 
 1.  On the line after `<ul id="users-list">`, add this line: `{JSON.stringify(users)}`.
 
-1.  If you visit http://localhost:8888/ and look in your User Management section.... you won't see it. But if you look in your console, your console log should be working as expected and printing `apiResponse`. You may be getting a `403 error: forbidden` or a `Access-Control-Allow-Origin` message. So what's the problem?
+1.  If you visit http://localhost:3000/ and look in your User Management section.... you won't see it. But if you look in your console, your console log should be working as expected and printing `apiResponse`. You may be getting a `403 error: forbidden` or a `Access-Control-Allow-Origin` message. So what's the problem?
 
-1.  We need to allow cross-origin resource sharing. By default, your Express app will block "localhost:8888" because it's not using the same domain as itself, "localhost:3000". But since you're working locally, we can disable this for now.
+1.  We need to allow cross-origin resource sharing. By default, your Express app will block "localhost:3000" because it's not using the same domain as itself, "localhost:4000". But since you're working locally, we can disable this for now.
 
-1.  In your terminal navigate to the `eventonica-api` directory, stop your app, and install the CORS package:
+1.  In your terminal navigate to the `server` directory, stop your app, and install the CORS package:
     `npm install --save cors`
 
-1.  In `eventonica-api/app.js`, require CORS on line 6:
+1.  In `server/app.js`, require CORS on line 6:
     `var cors = require("cors");`
 1.  Now on line 22 have express use CORS:
     `app.use(cors());`
 
-1.  Restart `eventonica-api`. If you refresh localhost:8888, you should see the response from your `/users` route!
+1.  Restart `server`. If you refresh localhost:3000, you should see the response from your `/users` route!
 
 #### Use your API data to render a users list in your React app
 
 Now your challenge is to:
 
-- Move your example users out of `eventonica-react/src/components/Users.jsx` and into `eventonica-api/routes/users.js` and make sure it is a single array of users.
-- Have the users array be the response from http://localhost:3000/users, and make sure it renders in your frontend on localhost:8888
+- Move your example users out of `client/src/components/Users.jsx` and into `server/routes/users.js` and make sure it is a single array of users.
+- Have the users array be the response from http://localhost:4000/users, and make sure it renders in your frontend on localhost:3000
 - Have your React Users component render users as HTML list items rather than plain text.
 
 #### The real work
 
-Add remaining REST API routes for `users` listed in the [project README](./README.md). Dont worry about `events` or `favorites` for now... you can add those after we get our database going.
+Add remaining REST API routes for `users` listed in the [project README](./README.md). Don't worry about `events` or `favorites` for now... you can add those after we get our database going.
 
-`Users` now needs "add" and "delete" functionality. For example, a frontend function called `addUser()` should make a POST request to http://localhost:3000/users/
+`Users` now needs "add" and "delete" functionality. For example, a frontend function called `addUser()` should make a POST request to http://localhost:4000/users/
 and add a user by posting JSON with your API (which currently just saves to a variable since we have no DB), and the API would need a route like this:
 
-```
-router.post('/', function(req, res, next) {
+```js
+router.post('/', function (req, res, next) {
   // save request data to a variable in routes/users.js
 
   res.send('some message about your data being saved, and a copy of that data');
