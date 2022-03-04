@@ -6,7 +6,7 @@ Up until now in your Eventonica project, all the data is deleted every time you 
 
 #### Example API Endpoint
 
-For example, in your code before, to get all the events, you might've had a function like `app.getAllEvents()`. Instead, we will create an API endpoint like `http://127.0.0.1:3000/events` that returns all the current events as a JSON response.
+For example, in your code before, to get all the events, you might've had a function like `app.getAllEvents()`. Instead, we will create an API endpoint like `http://127.0.0.1:4000/events` that returns all the current events as a JSON response.
 
 #### Why is this better?
 
@@ -42,14 +42,14 @@ The following directions are an adaptation of [this freeCodeCamp tutorial](https
 > > - In package.json remove Jade
 > > - Install Pug (Jade has been renamed to pug) `npm install pug`
 > > - Run `npm install` again
-> > - In **app.js** changes `app.set('view engine', 'jade');` to `app.set('view engine', 'pug');`
+> > - In **server/app.js** changes `app.set('view engine', 'jade');` to `app.set('view engine', 'pug');`
 > > - In **views** folder rename all jade file to pug. Ex: index.jade -> index.pug
 > > - Run `npm audit` to check for any vulnerabilities again
 
 1. Inside the **server** directory, go to **bin/www** and change the port number on line 15 from 3000 to 4000. You will be running both apps at the same time later on, so doing this will avoid issues.
 
 ```js
-//server>bin>www
+// server/bin/www
 
 var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
@@ -71,30 +71,38 @@ app.set('port', port);
 
 1. Stop your `server` app and restart. `http://localhost:4000` should now show your new message.
 
-1. `.gitignore` your `node_modules`. Push your project up to GitHub by creating a new repo there also called `eventonica-api`. Follow the directions on the page that include the first commit, etc.
+1. `.gitignore` your `node_modules`. Push your project up to GitHub.
 
 #### Create a new Events route
 
-1. Duplicate your `eventonica-api/routes/index.js` file and name it `eventonica-api/routes/events.js`. In this new file, change line 6 to say:
+1. Duplicate your `server/routes/index.js` file and name it `server/routes/events.js`. In this new file, change line 6 to say:
 
    ```
    res.render('index', { title: 'This is my events route.' });
    ```
 
-1. In `eventonica-api/app.js`, add this to line 25: `app.use("/events", eventsRouter);` You'll need to define `eventsRouter`, so add this to line 9: `var eventsRouter = require("./routes/events");`
+1. In `server/app.js`, add this to line 25: `app.use("/events", eventsRouter);` You'll need to define `eventsRouter`, so add this to line 9: `var eventsRouter = require("./routes/events");`
 
-1. Stop your `eventonica-api` app and restart. `http://localhost:3000/events` should now show your new message: 'This is my events route.' You just made a new route!
+1. Stop your `server` app and restart. `http://localhost:4000/events` should now show your new message: **This is my events route.** You just made a new route!
 
-> Note: Obviously, any other app calling `http://localhost:3000/events` would be doing it to get data, not to get a visual web page, but it's nice to have proof that things are working so far. Thanks [express-generator](http://expressjs.com/en/starter/generator.html)!
+> Note: Obviously, any other app calling `http://localhost:4000/events` would be doing it to get data, not to get a visual web page, but it's nice to have proof that things are working so far. Thanks [express-generator](http://expressjs.com/en/starter/generator.html)!
 
 #### Returning data in the Users endpoint
 
-1. Copy your list of mock users to the to of `users.js` into an array called `users`.
+1. Copy your list of mock users from your client folder to the `server/routes/users.js` into an array called `users`.
+
+```js
+let mockUsers = [
+  { id: 1, name: 'Marlin', email: 'marlin@gmail.com' },
+  { id: 2, name: 'Nemo', email: 'nemo@gmail.com' },
+  { id: 3, name: 'Dory', email: 'dory@gmail.com' }
+];
+```
 
 2. Update the endpoint so it returns `res.json({users:[your mock users here]});`
    **Check** Review the difference between `res.json` and `res.send`. Typically front-end apps to expect to receive responses as a JSON.
 
-Restart your server. Do you see the events list at `http://localhost:3000/users`?
+Restart your server. Do you see the users list at `http://localhost:4000/users`?
 
 **What shape should the response object be?**
 The example response returns `{ users: [array of users] }` instead of just `res.json(users)`. This is because naming the user object `users` is a more clear way of presenting this information. Also, this endpoint could send other information in addition to the user array. For example, it is common to have pagination in GET endpoints. So the response could eventually be something like `res.json( { users:[user array], pagination: {pageSize: 10, page: 1 } });`
@@ -104,7 +112,7 @@ The example response returns `{ users: [array of users] }` instead of just `res.
 Testing in Postman (or a similar app) is a great way to test and understand your backend services. While you can test the URLs in Chrome, or test your endpoints by calling them in React, they offer less flexibility, and/or might have less context into the endpoint's behavior and errors.
 
 1. Testing the endpoint
-   Open Postman, and open a new tab called "Eventonica". "GET" should be automatically selected in the dropdown. Enter `http://localhost:3000/users` into the request URL and press send. You should see the same list of users in the response below.
+   Open Postman, and open a new tab called "Eventonica". "GET" should be automatically selected in the dropdown. Enter `http://localhost:4000/users` into the request URL and press send. You should see the same list of users in the response below.
 
 2. Testing sending information
    Now the get users endpoint always returns all users. However, in the future we might want filtering.
@@ -113,28 +121,26 @@ To test this, you can console log `console.log(req.body, 'the body')` before the
 
 #### Access your API from your React app
 
-1.  Back in your frontend, open `eventonica-react/src/Users.js`. Add this code to be the next line right after `const Users = () => {` so that it is inside your React code block:
+1.  Back in your frontend, open `client/src/Users.js`. Add this code to be the next line right after `const Users = () => {` so that it is inside your React code block:
 
-    ````
+    ```jsx
     const [users, setUsers] = useState([]);
 
-        console.log("users", users)
+    console.log('users', users);
 
-        const getUsers = () => {
-          fetch("http://localhost:3000/users")
-            .then(res => res.json())
-            .then(res => setUsers(res.users))
-        };
+    const getUsers = () => {
+      fetch('http://localhost:4000/users')
+        .then((res) => res.json())
+        .then((res) => setUsers(res.users));
+    };
 
-        useEffect(() => {
-          getUsers(); // useEffect will run getUsers() every time this component loads, as opposed to just the first time it is rendered.
-        }, []);
-        ```
+    useEffect(() => {
+      getUsers(); // useEffect will run getUsers() every time this component loads, as opposed to just the first time it is rendered.
+    }, []);
+    ```
 
     **Check**
     Why do we set `setUsers(res.users)` instead of `setUsers(res)`? Remember that `res` is an object with a key `users`, but it could also have other information. Try to keep states as specific as possible. ie if the `res` response did have other information such as pagination, we want to keep the `users` state as "specific" as possible, so that it only stores the users array part of the API response.
-
-    ````
 
 1.  If you look at http://localhost:8888/ or your terminal, it will probably say that `useState` and `useEffect` are not defined. You should import these React hooks from React like this on line 1:
 
