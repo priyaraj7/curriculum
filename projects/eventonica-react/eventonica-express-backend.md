@@ -89,7 +89,7 @@ app.set('port', port);
 
 #### Returning data in the Users endpoint
 
-1. Copy your list of mock users from your client folder to the `server/routes/users.js` into an array called `users`.
+1. Copy your list of mock users from your client/src/components/Users.js file to the `server/routes/users.js` into an array called `users`.
 
 ```js
 let mockUsers = [
@@ -100,7 +100,16 @@ let mockUsers = [
 ```
 
 2. Update the endpoint so it returns `res.json({users:[your mock users here]});`
-   **Check** Review the difference between `res.json` and `res.send`. Typically front-end apps to expect to receive responses as a JSON.
+
+```js
+// server/routes/users.js`
+router.get('/', function (req, res, next) {
+  console.log(req.body, 'the body');
+  res.json({ users: mockUsers });
+});
+```
+
+**Check** Review the difference between `res.json` and `res.send`. Typically front-end apps to expect to receive responses as a JSON.
 
 Restart your server. Do you see the users list at `http://localhost:4000/users`?
 
@@ -145,8 +154,8 @@ To test this, you can console log `console.log(req.body, 'the body')` before the
 
 1.  If you look at http://localhost:3000/ or your terminal, it will probably say that `useState` and `useEffect` are not defined. You should import these React hooks from React like this on line 1:
 
-    ```
-    import React, {useEffect, useState} from 'react';
+    ```js
+    import React, { useEffect, useState } from 'react';
     ```
 
 1.  On the line after `<ul id="users-list">`, add this line: `{JSON.stringify(users)}`.
