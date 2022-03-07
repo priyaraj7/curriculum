@@ -24,38 +24,98 @@ In addition to the usual steps:
 
    - Use the datatype [serial](https://www.postgresql.org/docs/12/datatype-numeric.html#DATATYPE-SERIAL) for `id` to create an auto-incrementing integer id.
    - Make the `id` column a [primary key](https://www.postgresql.org/docs/12/ddl-constraints.html#DDL-CONSTRAINTS-PRIMARY-KEYS) so that every user has a unique id.
-   - Try running the following SQL insert multiple times to see how the `serial` type works: `INSERT INTO users (name) values ('jane');`. Your table should have automatically filled the `id` field for you!
+
+   ```sql
+   CREATE TABLE users (
+   id serial PRIMARY KEY,
+   name VARCHAR ( 50 ) UNIQUE NOT NULL,
+   email VARCHAR ( 50 ) UNIQUE NOT NULL
+   );
+   ```
+
+- Try running the following SQL insert multiple times to see how the `serial` type works. Your table should have automatically filled the `id` field for you!
+
+```sql
+INSERT INTO users(name, email)
+VALUES('Crush','crush@gmail.com');
+```
 
 1. Create a table named `events` that contains the same fields as your `Event` class. Create the `id` column like you did for the `users` table.
 
 1. Install [pg-promise](https://expressjs.com/en/guide/database-integration.html#postgresql) in your project folder - this module connects your Express application to a Postgres database.
 
+```bash
+npm install pg-promise
+```
+
 1. Copy the setup instructions for `pg-promise` in your `index.js` file. Your connection string is probably something like `postgres://localhost:5432/eventonica`. You should not need a username or password if you [setup posgres](../../databases/installing-postgresql.md) correctly.
+
+```js
+// db/d-connection.js;
+const pgp = require('pg-promise')(/* options */);
+const db = pgp('postgres://localhost:5432/eventonica');
+
+module.exports = db;
+```
+
+```js
+// server/routes/ users.js;
+
+....
+var db = require("../db/db-connection.js"); // line 4
+
+/* GET users listing. */
+
+....
+/* Add users listing. */
+router.post("/", async (req, res) => {
+  const user = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+  console.log(user);
+  try {
+    const createdUser = await db.one(
+      "INSERT INTO users(name, email) VALUES($1, $2) RETURNING *",
+      [user.name, user.email]
+    );
+    console.log(createdUser);
+    res.send(createdUser);
+  } catch (e) {
+    // change code here
+    if (e.code === "23505") {
+      res.status(400).json({ code: "23505", message: "User already exists" });
+    }
+    return res.status(400).json({ e });
+  }
+});
+
+```
 
 1. Update your Eventonica methods (addUser(),etc) to use SQL commands.
 
-   - Use `psql` or `PGAdmin` to test your SQL commands.
-   - Add them to your JS using the package `pg-promise` - you can find example queries [here](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example).
-   - Note that `pg-promise` requires you to specify how many rows, if any, a query should return. For example, `db.any` indicates that the query can return any number of rows, `db.one` indicates that the query should return a single row, and `db.none` indicates that the query must return nothing.
+- Use `psql` or `PGAdmin` to test your SQL commands.
+- Add them to your JS using the package `pg-promise` - you can find example queries [here](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example).
+- Note that `pg-promise` requires you to specify how many rows, if any, a query should return. For example, `db.any` indicates that the query can return any number of rows, `db.one` indicates that the query should return a single row, and `db.none` indicates that the query must return nothing.
 
-   Ex: Adding a user
+Ex: Adding a user
 
-   ```js
-   // in Express, e.g. index.js
-   app.post('/users', (req, res) => {
-     eventonica.addUser(req.body).then(() => res.sendStatus(204));
-   });
-   ```
+```js
+// in Express, e.g. index.js
+app.post('/users', (req, res) => {
+  eventonica.addUser(req.body).then(() => res.sendStatus(204));
+});
+```
 
-   ```js
-   // in models.js
+```js
+// in models.js
 
-   addUser(data) {
-     // note: this returns a Promise
-     return db.one('INSERT INTO users (name) values (\$1) RETURNING id, name', [data.name]);
-   }
+addUser(data) {
+  // note: this returns a Promise
+  return db.one('INSERT INTO users (name) values (\$1) RETURNING id, name', [data.name]);
+}
 
-   ```
+```
 
 1. Test that your new APIs work using Postman and your webpage. Using your preferred Postgres client such as Postico or `psql`, check that the database contains the information you would expect.
 
