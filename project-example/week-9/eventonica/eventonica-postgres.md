@@ -91,7 +91,7 @@ In addition to the usual steps:
    - Add them to your JS using the package `pg-promise` - you can find example queries [here](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example).
    - Note that `pg-promise` requires you to specify how many rows, if any, a query should return. For example, `db.any` indicates that the query can return any number of rows, `db.one` indicates that the query should return a single row, and `db.none` indicates that the query must return nothing.
 
-   1. A GET request will be your first endpoint. You can put raw SQL that will touch the API database inside the db.any(). All users will be get by using `SELECT` clause.
+   A GET request will be your first endpoint. You can put raw SQL that will touch the API database inside the db.any(). All users will be get by using `SELECT` clause.
 
    ```js
    // server/routes/ users.mjs;
@@ -117,7 +117,7 @@ In addition to the usual steps:
    export default router;
    ```
 
-   1. Post is used to add new data into database. Pay attention to the `async` and `await` keywords, since node.js is interacting with external PostgreSQL database. Deconstruct the data in request body. Interact with the database by db.one() with SQL command, where $1, $2 corresponds to the parameters in `[user.name, user.email]`. `RETURNING *` is used to get useful information about the results and the results can be displayed by `res.send()`.
+   Post is used to add new data into database. Pay attention to the `async` and `await` keywords, since node.js is interacting with external PostgreSQL database. Deconstruct the data in request body. Interact with the database by db.one() with SQL command, where $1, $2 corresponds to the parameters in `[user.name, user.email]`. `RETURNING *` is used to get useful information about the results and the results can be displayed by `res.send()`.
 
    ```js
    /* Add users listing. */
@@ -140,7 +140,7 @@ In addition to the usual steps:
    });
    ```
 
-   1. To delete User, a corresponding id is needed. So, in the route, `:id` is written and the id is obtained by deconstructing `req.params.`
+   To delete User, a corresponding id is needed. So, in the route, `:id` is written and the id is obtained by deconstructing `req.params.`
 
    ```js
    /* Delete users listing. */
