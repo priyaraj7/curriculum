@@ -110,6 +110,13 @@ In addition to the usual steps:
 
    /* Add users listing. */
 
+    /* Delete users listing. */
+   ```
+
+   Post is used to add new data into database. Pay attention to the `async` and `await` keywords, since node.js is interacting with external PostgreSQL database. Deconstruct the data in request body. Interact with the database by db.one() with SQL command, where $1, $2 corresponds to the parameters in `[user.name, user.email]`. `RETURNING *` is used to get useful information about the results and the results can be displayed by `res.send()`.
+
+   ```js
+   /* Add users listing. */
    router.post('/', async (req, res) => {
      const user = {
        name: req.body.name,
@@ -127,20 +134,24 @@ In addition to the usual steps:
        return res.status(400).json({ e });
      }
    });
+   ```
 
+   To delete User, a corresponding id is needed. So, in the route, `:id` is written and the id is obtained by deconstructing `req.params.`
+
+   ```js
    /* Delete users listing. */
 
-     //Parameterized queries use placeholders instead of directly writing the
-     //values into the statements. Parameterized queries increase security and performance.
+   //Parameterized queries use placeholders instead of directly writing the
+   //values into the statements. Parameterized queries increase security and performance.
 
-   router.delete("/:id", async (req, res) => {
-       // : acts as a placeholder
+   router.delete('/:id', async (req, res) => {
+     // : acts as a placeholder
      const userId = req.params.id;
      try {
-     await db.none("DELETE FROM users WHERE id=$1", [userId]);
-     res.send({ status: "success" });
+       await db.none('DELETE FROM users WHERE id=$1', [userId]);
+       res.send({ status: 'success' });
      } catch (e) {
-     return res.status(400).json({ e });
+       return res.status(400).json({ e });
      }
    });
 
